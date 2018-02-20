@@ -2,6 +2,10 @@ package bodies;
 
 public class TransformBase {
 	
+	/**
+	 * List of static methods which return common transforms
+	 */
+	
 	public static TransformHandler I() {
 		return (p -> p);
 	}
@@ -20,8 +24,8 @@ public class TransformBase {
 		return p -> {
 			double x = p.getX();
 			double y = p.getY();
-			p.setX(x/(x*x+y*y+0.01));
-			p.setY(-y/(x*x+y*y+0.01));
+			p.setX(x/(x*x+y*y));
+			p.setY(-y/(x*x+y*y));
 			return p;
 		};
 	}
@@ -46,12 +50,12 @@ public class TransformBase {
 		};
 	}
 	
-	public static TransformHandler matris(double M [][]) {
+	public static TransformHandler matris(double a, double b, double c, double d) {
 		return p -> {
 			double x = p.getX();
 			double y = p.getY();
-			p.setX(M[0][0]*x+M[0][1]*y);
-			p.setY(M[1][0]*x+M[1][1]*y);
+			p.setX(a*x+b*y);
+			p.setY(c*x+d*y);
 			return p;
 		};
 	}

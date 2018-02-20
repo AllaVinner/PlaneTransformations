@@ -3,17 +3,29 @@ package bodies;
 import javafx.scene.canvas.GraphicsContext;
 
 public class Grid extends MathBody {
-	private Point [] points;
+	/**
+	 * Represents the mathematical notion of a grid. 
+	 */
 	private int lengthCurve; // Number of points in each curve
-	private int numCurves; // Allways even
+	private int numCurves; // Total number of curves (Always even)
 	
+	/**
+	 * 
+	 * @param spacing between each line in the grid.
+	 * @param ds spacing within a line
+	 * @param numLines number of vertical lines in the grid (= number of horizontal)
+	 * @param x0 x-coordinate of the middle of the grid.
+	 * @param y0 y-coordinate of the middle of the grid.
+	 */
 	public Grid(double spacing, double ds, int numLines, double x0, double y0) {
 		this.numCurves = numLines*2;
-		this.lengthCurve =(int) ((spacing* (numLines-1))/ds); // -1: To stop lines from exceding the grid
+		this.lengthCurve =(int) ((spacing* (numLines-1))/ds); // -1: To stop lines from exceeding the grid
 		this.size = numCurves*lengthCurve;
 		points = new Point[size];
+		
 		double x;
 		double y;
+		//Set all the vertical lines. Top to , left to right
 		for(int i = 0; i < numCurves / 2; i ++) {
 			for(int j = 0; j < lengthCurve; j++) {
 				x = x0 - numCurves/4*spacing+spacing*i;
@@ -21,6 +33,7 @@ public class Grid extends MathBody {
 				points[i*lengthCurve+j] = new Point(x,y);
 			}
 		}
+		// Set all horizontal lines. Left to right, top to bottom
 		for(int i = 0; i < numCurves / 2; i ++) {
 			for(int j = 0; j < lengthCurve; j++) {
 				x = x0 - numCurves/4*spacing+ds*j;
@@ -28,16 +41,23 @@ public class Grid extends MathBody {
 				points[numCurves/2*lengthCurve+i*lengthCurve+j] = new Point(x,y);
 			}
 		}
+		name = "Grid:";
 	}
 	
-	
+	/**
+	 * The first parameter yields the set of all the elements. 
+	 * The second two parameters explain which element belongs to which line.
+	 * @param points Array of all points in the grid
+	 * @param lengthCurve Number of elements in each curve
+	 * @param numCurves Total number of curves.
+	 */
 	public Grid(Point [] points, int lengthCurve, int numCurves) {
 		this.points = points;
 		this.lengthCurve = lengthCurve;
 		this.numCurves = numCurves;
 		size =points.length;
+		name = "Grid: ";
 	}
-
 	
 	@Override
 	public void transform(TransformHandler th) {
@@ -61,11 +81,6 @@ public class Grid extends MathBody {
 		
 	}
 	
-	@Override
-	public String toString() {
-		return "MathBody: Grid ";
-	}
-	
 	@Override 
 	public Grid copy() {
 		Point[] ret = new Point [points.length];
@@ -73,11 +88,6 @@ public class Grid extends MathBody {
 			ret[i] = points[i].copy();
 		}
 		return new Grid(ret, this.lengthCurve, this.numCurves);
-	}
-
-	@Override
-	public Point[] getArray() {
-		return points;
 	}
 
 }

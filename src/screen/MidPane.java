@@ -27,7 +27,6 @@ public class MidPane {
 	
 	private Slider scaler;
 	private Slider time;
-	private Button play;
 	
 	private Color backgroundColor;
 	private double scale;
@@ -52,7 +51,7 @@ public class MidPane {
 			
 
 		 VBox vBox = new VBox();
-		 scaler = new Slider(1, 250, scale);
+		 scaler = new Slider(1, 350, scale);
 		 scaler.valueProperty().addListener((observable, oldValue, newValue) -> {
 			   scale = newValue.intValue();
 			   draw();
@@ -62,30 +61,7 @@ public class MidPane {
 		 time.valueProperty().addListener((observable, oldValue, newValue) -> {
 			   draw();
 			});
-		 
-		 Thread playThread = new Thread(() -> {
-	            for(double i = 0; i <= time.getMax(); i += 0.01) {
-	            	try {
-						Thread.sleep(60);
-					} catch (InterruptedException e1) {
-					}
-	            	graphic .strokeLine(100, 100,100+10*i, 15*i*i+ 10*i);
-	            	draw();
-	            }
-	            time.setValue(time.getMax());
-            	draw();
-	            
-	        });
-		 
-		 play = new Button("Play");
-		 play.setOnAction(a->{	
-		    playThread.start();
-		 });
-		 
-		 
-			
 		 vBox.getChildren().addAll(scaler, time);
-		 
 		root.getChildren().addAll(canvas,vBox);
 	}
 	
@@ -103,6 +79,9 @@ public class MidPane {
 		draw();
 	}
 	
+	/**
+	 * Draw all the fixed and animations bodies
+	 */
 	public void draw() {
 		 drawBackground();
 		for (Map.Entry<MathBody, DisplayVariables> entry : fixedObjects.entrySet()) {
@@ -115,6 +94,10 @@ public class MidPane {
 		}
 	}
 	
+	/**
+	 * Transforms all the bodies from their original state.
+	 * @param T Transform
+	 */
 	public void domainTransform(TransformHandler T) {
 		for (Map.Entry<Animation, DisplayVariables> entry : animationObjects.entrySet()) {
 			entry.getKey().domainTransform(T);
@@ -123,6 +106,10 @@ public class MidPane {
 		draw();
 	}
 	
+	/**
+	 * Transforms all the bodies from their transformed state.
+	 * @param T Transform
+	 */
 	public void imageTransform(TransformHandler T) {
 	for (Map.Entry<Animation, DisplayVariables> entry : animationObjects.entrySet()) {
 		entry.getKey().imageTransform(T);
@@ -130,7 +117,6 @@ public class MidPane {
 	time.setValue(0);
 	draw();
 }
-
 
 	public void clearAll() {
 		fixedObjects.clear();

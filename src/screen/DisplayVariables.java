@@ -4,6 +4,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 public class DisplayVariables {
+	/**
+	 * Set of fields which sets the graphical context.
+	 */
 	Color fill;
 	Color stroke;
 	double width;
